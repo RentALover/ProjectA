@@ -1,0 +1,9 @@
+# Terraform 本地状态与插件
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+
+# terraform apply 生成的产物(可由脚本重新生成)
+nginx.conf
+root@*

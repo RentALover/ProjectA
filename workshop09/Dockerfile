@@ -1,0 +1,27 @@
+FROM alpine:latest
+
+ENV BLUEBIRD_WARNINGS=0 \
+  NODE_ENV=production \
+  NODE_NO_WARNINGS=1 \
+  NPM_CONFIG_LOGLEVEL=warn \
+  SUPPRESS_NO_CONFIG_WARNING=true
+
+RUN apk add --no-cache \
+  nodejs
+RUN apk update && apk upgrade
+COPY package.json ./
+COPY .npmrc ./
+
+RUN  apk add --no-cache npm \
+ && npm i --no-optional \
+ && npm cache clean --force \
+ && apk del npm
+
+COPY . /app
+
+RUN adduser -D -u 10001 appuser
+
+CMD ["node","/app/app.js"]
+
+EXPOSE 3000
+USER appuser
